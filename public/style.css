@@ -93,7 +93,7 @@ body {
 }
 
 .added-popup {
-    position: absolute;
+    position: fixed;
     background-color: #dd4338;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
@@ -112,4 +112,12 @@ body {
 .search-msg {
     display: none;
     text-align: center;
+}
+
+.link1 {
+    color: red;
+    background-color: white;
+    padding: 7px;
+    border-radius: 8px;
+    margin-left: calc(50% - 35px);
 }

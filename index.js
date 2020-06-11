@@ -26,17 +26,15 @@ http.listen(8080)
 // TRACKER
 io.on("connection", socket => {
     socket.on("add", data => {
+        let idnum = Math.floor(Math.random() * 10000);
         accounts[data.user].cards.unshift({
             name: data.name,
             health: data.health,
-            damage: data.damage
+            damage: data.damage,
+            id: idnum
         });
         fs.writeFileSync("data.json", JSON.stringify(accounts));
-        socket.emit("listagain", {
-            name: data.name,
-            health: data.health,
-            damage: data.damage
-        });
+        socket.emit("listagain", accounts[data.user].cards, "Card Added!");
     });
 
     socket.on("list", user => {
@@ -51,14 +49,23 @@ io.on("connection", socket => {
             }
         });
         if(arr[0] !== undefined){
-            socket.emit("found", arr)
+            socket.emit("found", arr);
         } else {
-            socket.emit("notfound")
-        }
+            socket.emit("notfound");
+        }  
+
     });
 
-    socket.on("delete", () => {
-        console.log("YES");
+    socket.on("delete", (id, user) => {
+        for (let i = 0; i < accounts[user].cards.length; i++) {
+            if (accounts[user].cards[i].id == id) {
+                accounts[user].cards.splice(i, 1);
+                break;
+            }
+        }
+        fs.writeFileSync("data.json", JSON.stringify(accounts));
+        socket.emit("list", accounts[user].cards);
+        socket.emit("deleted", "Card Deleted!");
     });
 });
 
