@@ -4,7 +4,8 @@ const sio = require("socket.io")(http);
 const signup_io = sio.of("/signup");
 const login_io = sio.of("/login");
 const io = sio.of("/pokemons");
-const fs = require("fs")
+const fs = require("fs");
+const PORT = process.env.PORT || 8080;
 
 const accounts = JSON.parse(fs.readFileSync("data.json", "utf8"))
 
